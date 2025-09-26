@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DCT-Shield: A Robust Frequency-Domain Defense against Malicious Image Editing</title>
+  <meta name="description" content="Project page for DCT-Shield: frequency-domain adversarial immunization against malicious image editing via JPEG-aware DCT optimization."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff; --panel:#f9f9f9; --text:#000000; --muted:#444444;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:800px;margin:0 auto;padding:28px}
+    .hero h1{font-size:clamp(28px,4.5vw,44px);line-height:1.2;margin:20px auto 10px;text-align:center;max-width:960px}
+    .authors{text-align:center;color:var(--muted);margin-top:10px}
+    .affil{text-align:center;font-size:15px;font-weight:500;margin-top:6px}
+    .highlight{text-align:center;margin-top:10px;font-weight:700;font-size:16px;color:#b00020}
+    .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;background:#000;color:#fff;font-weight:500;font-size:14px;transition:all .2s ease}
+    .btn:hover{background:#333;transform:translateY(-1px)}
+    .btn svg{width:16px;height:16px;fill:#fff}
+    .panel{background:transparent;border:none;border-radius:0;box-shadow:none;padding:0;margin:32px 0}
+    h2{font-size:clamp(20px,2.8vw,28px);margin:24px 0 16px;border-bottom:1px solid #e0e0e0;padding-bottom:6px}
+    .code{font-family:"Fira Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;white-space:pre-wrap;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;padding:12px;font-size:13px;color:#222;overflow:auto;position:relative}
+    footer{padding:38px 0;color:var(--muted)}
+    .thumb{background:transparent;border-radius:12px;border:none;overflow:hidden;margin:10px 0}
+    .thumb img{display:block;width:100%;height:auto;border-radius:12px}
+    .small{font-size:13px;color:var(--muted)}
+    .bibwrap{position:relative}
+    .copy-ico{position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;opacity:.7;padding:4px}
+    .copy-ico:hover{opacity:1}
+    .copy-ico svg{width:16px;height:16px;fill:#444}
+  </style>
+</head>
+<body>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>DCT-Shield: A Robust Frequency-Domain Defense against Malicious Image Editing</h1>
+      <div class="authors">
+        <a href="https://aniruddhabala.github.io" target="_blank" rel="noopener">Aniruddha Bala<sup>1</sup></a> · 
+        <a href="https://sites.google.com/view/rohit-chowdhury/home" target="_blank" rel="noopener">Rohit Chowdhury<sup>1</sup></a> · 
+        <a href="https://therohanjaiswal.github.io" target="_blank" rel="noopener">Rohan Jaiswal<sup>1</sup></a> · 
+        <a href="https://sid-roheda.github.io" target="_blank" rel="noopener">Siddharth Roheda<sup>1</sup></a>
+      </div>
+      <div class="affil"><sup>1</sup> Samsung Research Bangalore</div>
+      <div class="highlight">⭐ ICCV 2025 Highlight</div>
+      <div class="cta">
+        <a class="btn" href="https://arxiv.org/abs/2504.17894" target="_blank" rel="noopener">📄 Paper</a>
+        <a class="btn" href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank" rel="noopener">▶ YouTube</a>
+      </div>
+    </section>
+
+    <section id="teaser" class="panel">
+      <div class="thumb"><img src="images/dctshield/teaser.png" alt="Teaser image"/></div>
+    </section>
+
+    <section id="abstract" class="panel">
+      <h2>Abstract</h2>
+      <p>
+        Advancements in diffusion models have enabled effortless image editing via text prompts, raising concerns about image security. Attackers with access to user images can exploit these tools for malicious edits. Recent defenses attempt to protect images by adding a limited noise in the pixel space to disrupt the functioning of diffusion-based editing models. However, the adversarial noise added by previous methods is easily noticeable to the human eye. Moreover, most of these methods are not robust to purification techniques like JPEG compression under a feasible pixel budget. We propose a novel optimization approach that introduces adversarial perturbations directly in the frequency domain by modifying the Discrete Cosine Transform (DCT) coefficients of the input image. By leveraging the JPEG pipeline, our method generates adversarial images that effectively prevent malicious image editing. Extensive experiments across a variety of tasks and datasets demonstrate that our approach introduces fewer visual artifacts while maintaining similar levels of edit protection and robustness to noise purification techniques.
+      </p>
+    </section>
+
+    <section id="method" class="panel">
+      <h2>Method at a Glance</h2>
+      <p>
+        DCT-Shield optimizes perturbations in the JPEG frequency space. Given an input image, we enter the JPEG pipeline, adjust selected DCT bands under a perceptual budget, and invert back to the pixel domain. The optimization objective penalizes edit-model activations that enable successful malicious edits while enforcing imperceptibility and robustness to purification.
+      </p>
+      <ul>
+        <li>Frequency-domain optimization on <em>DCT coefficients</em></li>
+        <li>JPEG-aware constraints for imperceptibility</li>
+        <li>Robustness against common purification (e.g., JPEG)</li>
+      </ul>
+      <div class="thumb"><img src="images/dctshield/arch.png" alt="Method overview diagram (replace)"/></div>
+    </section>
+
+    <section id="results" class="panel">
+      <h2>Qualitative Results</h2>
+      <div class="thumb"><img src="images/dctshield/qualitive_low_res.png" alt="Result 1"/><div class="small" style="padding:8px 12px"></div></div>
+      <!-- <div class="thumb"><img src="assets/result_2.jpg" alt="Result 2"/><div class="small" style="padding:8px 12px">Original → DCT-Shield → Attempted edit</div></div> -->
+    </section>
+
+    <section id="bibtex" class="panel">
+      <h2>Citation</h2>
+      <div class="bibwrap">
+        <button class="copy-ico" onclick="copyBib()" aria-label="Copy BibTeX" title="Copy BibTeX">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        </button>
+        <div class="code" id="bib">
+@inproceedings{bala2025dctshield,
+  title     = {DCT-Shield: A Robust Frequency-Domain Defense against Malicious Image Editing},
+  author    = {Bala, Aniruddha and Chowdhury, Rohit and Jaiswal, Rohan and Roheda, Siddharth},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2025}
+}
+        </div>
+      </div>
+    </section>
+
+    <footer class="wrap" style="padding-top:12px">
+      <div class="panel" style="padding:20px">
+        <div class="small">© 2025 DCT-Shield authors. Template adapted from <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">nerfies/nerfies.github.io</a> (CC BY-SA 4.0).</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    function copyBib(){
+      const src = document.getElementById('bib').innerText.trim();
+      const ta = document.createElement('textarea');
+      ta.value = src; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      const ico = document.querySelector('.copy-ico');
+      if(ico){
+        const prev = ico.innerHTML;
+        ico.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17l-3.88-3.88L3.71 13.7 9 19l12-12-1.41-1.41z"/></svg>';
+        setTimeout(()=>{ ico.innerHTML = prev; }, 1400);
+      }
+    }
+  </script>
+</body>
+</html>
